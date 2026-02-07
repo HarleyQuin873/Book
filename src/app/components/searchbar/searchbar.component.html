@@ -1,0 +1,11 @@
+<div class="search-book">
+          <input 
+            type="text" 
+            class="form-control" 
+            name="search" 
+            [(ngModel)]="term"
+            (input)="onSearch()"
+            autocomplete="off"
+            placeholder="&#61442; Cerca tramite titolo o autore..."
+          >
+        </div>

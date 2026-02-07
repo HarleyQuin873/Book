@@ -1,7 +1,11 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-header',
+   standalone: true, // obbligatorio
+   imports: [CommonModule, FormsModule],
   template: `
     <!-- <p>
       header works!
@@ -10,7 +14,7 @@ import { Component } from '@angular/core';
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
       <div class="container">
-        <a class="navbar-brand" href="index.html"
+        <a class="navbar-brand" routerLink="book"
           ><i class="fa fa-book"></i>Book</a
         >
         <button
@@ -28,11 +32,11 @@ import { Component } from '@angular/core';
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-              <a class="nav-link" href="index.html">Home</a>
+              <a class="nav-link" routerLink="book">Book</a>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <a class="nav-link" href="about.html">About</a>
-            </li>
+            </li> -->
             <!-- <li class="nav-item">
             <a class="nav-link" href="post.html">Sample Post</a>
           </li>

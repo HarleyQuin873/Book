@@ -1,7 +1,10 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-footer',
+   standalone: true, // obbligatorio
+   imports: [CommonModule],
   template: `
     <!-- <p>
       footer works!

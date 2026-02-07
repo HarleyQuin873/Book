@@ -1,41 +1,87 @@
- <!-- <p>
-      book works!
-    </p> -->
-    
-
-  <!-- Main Content -->
+   <!-- Main Content -->
   <div class="container">
      <div *ngIf="error" class="alert alert-danger">Error</div>
     <div class="row">
+
       <!-- <pre>{{ active | json }}</pre> -->
      
       <!-- <pre>{{books | json }}</pre> -->
 
       <div class="col-lg-6 col-md-12 mx-0">
+        <!-- <div class="spinner-border" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div> -->
+        <!-- <div *ngIf="!books" class="d-flex justify-content-center">
+           <div class="spinner-border" role="status">
+              <span class="visually-hidden">Loading...</span>
+           </div>
+        </div> -->
+        <app-spinner *ngIf="!books"></app-spinner>
+        <!-- <div class="search-book">
+          <input 
+            type="text" 
+            class="form-control" 
+            name="search" 
+            [(ngModel)]="term"
+            autocomplete="off"
+            placeholder="&#61442; Cerca tramite titolo o autore..."
+          >
+        </div> -->
+        <!-- <app-searchbar [books]="books"></app-searchbar> -->
+        <app-searchbar (search)="onSearch($event)"></app-searchbar>
 
          <ul class="list-group">
         <li 
-          *ngFor="let book of books"
+          *ngFor="let book of (books | filter:term) | paginate: {itemsPerPage: 5, currentPage: p } "
           class="list-group-item"
           [ngClass]="{'active': book.id === active?.id}"
           (click)="setActive(book)">
+        <!-- <li *ngFor="let book of filteredBooks | paginate: {itemsPerPage: 5, currentPage: p }"
+          class="list-group-item"
+          [ngClass]="{'active': book.id === active?.id}"
+          (click)="setActive(book)"> -->
           <img [src]="book.img ? book.img : '../../assets/img/add.png'" class="img-thumbnail mr-2" width="50">
             {{ book.title}} - {{ book.author}}
             <div class="float-end">
               <span [style.color]="book.price > 15 ? 'red' : null">€ {{ book.price | number:'1.2-2'}}</span>
-              <i class="fa fa-trash ms-3"
+              <!-- <i class=" fa fa-info-circle m-lg-1" aria-hidden="true" [routerLink]="['/book',book.id]"></i> -->
+              <i
+                 class="fa fa-info-circle m-lg-1"
+                 aria-hidden="true"
+                  (click)="$event.stopPropagation()"
+                  [routerLink]="['/book', book.id]">
+              </i>
+              <i class="fa fa-trash m-lg-1"
                 style="cursor:pointer"
                 (click)="delete($event,book)">
               </i>
             </div>
         </li>
       </ul>
-
+      <pagination-controls (pageChange)="p = $event"></pagination-controls>
       
     
       </div>
+    
      <div class="col-lg-6 col-md12 mx-0">
-      <form #f="ngForm" (submit)="save(f)">
+      <!-- <app-form
+        [active]="active"
+        [books]="books"
+        [imageSrc]="imageSrc"
+        (saveForm)="save($event)"
+        (resetForm)="reset($event)"
+        (imageChange)="readUrl($event)">
+        </app-form> 
+        -->
+      
+      <app-form
+          [active]="active"
+          [books]="books"
+          (resetClick)="reset()"
+          >
+      </app-form>
+      
+      <!-- <form #f="ngForm" (submit)="save(f)">
           <div class="mb-3">
             <input [ngModel]="active?.title" type="text" class="form-control" name="title" placeholder="Insert title...">
           </div>
@@ -66,13 +112,9 @@
               </strong> 
             </button>
           </div>
-          <!-- <input *ngIf="this.imageSrc" [ngModel]="this.imageSrc" type="hidden" name="img">
-           <input *ngIf="active" [ngModel]="active.img" type="hidden" name="img"> -->
+         
            <input [ngModel]="active?.img || imageSrc" type="hidden" name="img">
-          <!-- <div class="mb-3 form-check">
-            <input type="checkbox" class="form-check-input" id="exampleCheck1">
-            <label class="form-check-label" for="exampleCheck1">Check me out</label>
-          </div> -->
+         
           <button type="submit" class="btn btn-outline-warning btn-sm mr-1 m-3">
             <strong>
               {{ active ? 'EDIT' : 'ADD'}}
@@ -83,7 +125,7 @@
               RESET
             </strong>
           </button>
-      </form>
+      </form> -->
      </div>
     </div>
   </div>

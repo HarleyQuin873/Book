@@ -1,12 +1,33 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Book } from 'src/app/model/book';
-import { NgForm } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
+import { BookService } from 'src/app/service/book.service';
+import { SearchbarComponent } from '../searchbar/searchbar.component';
+import { SpinnerComponent } from 'src/app/features/spinner/spinner.component';
+import { FormComponent } from 'src/app/shared/form/form.component';
+import { CommonModule } from '@angular/common';
+//import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { FilterPipe } from 'src/app/pipes/filter.pipe';
+import { RouterModule } from '@angular/router';
 
-const ApiUrl = 'http://localhost:3000/books';
+// const ApiUrl = 'http://localhost:3000/books';
 
 @Component({
   selector: 'app-book',
+    standalone: true,    
+    imports: [
+    CommonModule,
+    FormsModule,
+     RouterModule,  
+   NgxPaginationModule,
+ //  Ng2SearchPipeModule,
+    FormComponent,
+    SpinnerComponent,
+    SearchbarComponent, 
+    FilterPipe
+  ],
   templateUrl:'./book.component.html',
   styleUrls: ['./book.component.scss'],
  
@@ -16,9 +37,17 @@ export class BookComponent {
   error : any;
   // active : Book;
   active: Book | null = null;
-  imageSrc: string = '';
+  // p = 1;
+  p: number = 1;
+ 
 
-  constructor(private http: HttpClient ){}
+  filteredBooks: Book[] = [];
+  term: string = '';
+  
+
+  constructor(private http: HttpClient , private bookService : BookService){
+
+  }
   
   getAll(){
   //   this.http.get<Book[]>(ApiUrl)
@@ -29,11 +58,16 @@ export class BookComponent {
   //   err => this.error = err
   // );
 
-      this.http.get<Book[]>(ApiUrl).subscribe({
+      this.bookService.getAll()    //http.get<Book[]>(ApiUrl)
+      .subscribe({
       next: (res: Book[]) => {
         console.log(res);
         this.books = res;
       },
+      // next: (res: Book[]) => {
+      //   this.books = res;
+      //   this.filteredBooks = res;   // 🔥 copia iniziale
+      // },
       error: (err) => {
         this.error = err;
       }
@@ -56,7 +90,8 @@ export class BookComponent {
 
   // );
 
-      this.http.delete(`${ApiUrl}/${book.id}`).subscribe({
+      this.bookService.deleteBook(book)     //.http.delete(`${ApiUrl}/${book.id}`)
+      .subscribe({
       next: () => {
         const index = this.books.findIndex(b => b.id === book.id);
         this.books.splice(index, 1);
@@ -66,74 +101,9 @@ export class BookComponent {
       }
     });
   }
-
   
-
-  reset(form : NgForm){
-    // this.books = null;
-    // form = null;
-
-    this.imageSrc = '';
-    this.active = null;
-    form.reset();
-  }
   setActive(book: Book){
      this.active = book;
-  }
-
-  add(form: NgForm){
-    // const newBook = { ...form.value, img: this.imageSrc };
-
-    // console.log(form.value);
-    this.http.post<Book>(`${ApiUrl}`, form.value)
-    .subscribe((res:Book) =>{
-      this.books.push(res);
-      form.reset();
-      this.imageSrc = '';
-      // this.reset(form);
-    });
-  }
-
-  
-  readUrl(event: any) {
-  if (event.target.files && event.target.files.length) {
-    const [file] = event.target.files;
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => {
-      this.imageSrc = reader.result as string; // salva sempre
-      if (this.active) {
-        this.active.img = this.imageSrc; // solo per modifica libri
-      }
-    };
-  }
-}
-
-
- edit(form: NgForm){
-  if (!this.active) {
-    throw new Error('Active book is null');
-    // return;
-  }
-  const id = this.active.id;
-  
-  this.http.patch<Book>(`${ApiUrl}/${id}`, form.value)
-  .subscribe(res =>{
-
-    // console.log('edit element ');
-    const index = this.books.findIndex(b => b.id === id);
-    this.books[index] = res;
-  })
-    
-  }
-
-  save(form: NgForm){
-    if(this.active){
-      this.edit(form);
-    }
-    else{
-      this.add(form);
-    }
   }
 
   ngOnInit(): void {
@@ -143,4 +113,17 @@ export class BookComponent {
     
   }
 
+  reset(){
+    this.active=null;
+  }
+
+  onSearch(term: string) {
+  this.term = term;
+
+  this.filteredBooks = this.books.filter(book =>
+    book.title.toLowerCase().includes(term.toLowerCase()) ||
+    book.author.toLowerCase().includes(term.toLowerCase())
+  );
+   this.p = 1; // resetta pagina a 1
+}
 }
