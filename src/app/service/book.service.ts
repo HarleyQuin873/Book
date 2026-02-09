@@ -3,7 +3,9 @@ import { Book } from '../model/book';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { NgForm } from '@angular/forms';
-const ApiUrl = 'http://localhost:3000/books';
+//const ApiUrl = 'http://localhost:3000/books';
+const ApiUrl = 'http://localhost/bookserver/';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -23,18 +25,18 @@ export class BookService {
    //METODO Patch modifica DATI
   editBook(form : NgForm, active: Book): Observable<Book> {
 
-    return this.http.patch<Book>(`${ApiUrl}/${active.id}`, form.value);
+    return this.http.patch<Book>(`${ApiUrl}?id=${active.id}`, form.value);
   }
 
   //METODO DELETE CANCELLAZIONE DATI
   deleteBook(book: Book): Observable<Book> {
-    return this.http.delete<Book>(`${ApiUrl}/${book.id}`);
+    return this.http.delete<Book>(`${ApiUrl}?id=${book.id}`);
   }
 
   //METODO DETAIL-Book PASSAGGIO PARAMETRI
   detailBook(id: number): Observable<Book>{ //(id: Observable<Book> ){
  
-    return this.http.get<Book>(`${ApiUrl}/${id}`);
+    return this.http.get<Book>(`${ApiUrl}?id=${id}`);
   }
 
 

@@ -57,10 +57,15 @@ export class FormComponent {
     // console.log(form.value);
     this.bookService.addBook(form)     //http.post<Book>(`${ApiUrl}`, form.value)
     .subscribe((res:Book) =>{
+      // setTimeout(() => {
+      //   this.books.push(res);
+      // }, 500);
       this.books.push(res);
+     // location.reload();
       form.reset();
       this.imageSrc = '';
       // this.reset(form);
+     
     });
   }
 
@@ -77,6 +82,7 @@ export class FormComponent {
     // console.log('edit element ');
     const index = this.books.findIndex(b => b.id === id);
     this.books[index] = res;
+    location.reload(); // in modo tale che mi refresci la pagina e io veda subito i risultati
   })
     
   }
