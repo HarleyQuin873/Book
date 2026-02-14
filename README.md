@@ -1,5 +1,5 @@
 # Book
-
+Esercitazione del corso Angular di Lucio Ticali su Udemy Academy.
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.1.
 
 ## Development server
