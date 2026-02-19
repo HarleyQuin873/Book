@@ -44,3 +44,6 @@ Thumbs.db
 #login password
 /bookserver/config.php
 
+book/bookServer/auth/index.php
+
+
