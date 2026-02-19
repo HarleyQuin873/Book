@@ -28,11 +28,11 @@ import { RouterModule } from '@angular/router';
     SearchbarComponent, 
     FilterPipe
   ],
-  templateUrl:'./book.component.html',
-  styleUrls: ['./book.component.scss'],
+  templateUrl:'./dashboard.component.html',
+  styleUrls: ['./dashboard.component.scss'],
  
 })
-export class BookComponent {
+export class DashBoardComponent {
   books: Book[] = [];
   error : any;
   // active : Book;
@@ -66,7 +66,7 @@ export class BookComponent {
       },
       // next: (res: Book[]) => {
       //   this.books = res;
-      //   this.filteredBooks = res;   // 🔥 copia iniziale
+      //   this.filteredBooks = res;  
       // },
       error: (err) => {
         this.error = err;

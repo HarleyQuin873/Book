@@ -1,12 +1,17 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { BookDetailComponent } from './features/book-detail/book-detail.component';
-import { BookComponent } from './components/book/book.component';
+import { DashBoardComponent } from './components/dashboard/dashboard.component';
+//import { LoginGuard } from './login.guard';
+import { loginGuard } from './login.guard';
+import { HomeComponent } from './components/home/home.component';
+
 
 export const routes: Routes = [
-  {path : 'book/:id', component: BookDetailComponent},
-  {path : 'book', component: BookComponent},
-  {path : '', component: BookComponent}
+  {path: '', component: HomeComponent},
+  {path : 'dashboard/:id', component: BookDetailComponent, canActivate:[loginGuard]},
+  {path : 'book', component: DashBoardComponent},
+  {path : '', component: DashBoardComponent}
 ];
 
 @NgModule({

@@ -14,9 +14,7 @@ import { FormsModule } from '@angular/forms';
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
       <div class="container">
-        <a class="navbar-brand" routerLink="book"
-          ><i class="fa fa-book"></i>Book</a
-        >
+        <a class="navbar-brand" routerLink=""><i class="fa fa-book"></i>Book</a>
         <button
           class="navbar-toggler navbar-toggler-right"
           type="button"
