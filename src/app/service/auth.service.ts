@@ -37,7 +37,7 @@ export class AuthService {
   }
 
   private setSession(jwt: string){ //jwt : jason web token
-    let expire : number = new Date().getTime() + 10000; //10 secondi
+    let expire : number = new Date().getTime() + 60000 * 60; //un'ora
     localStorage.setItem('token', jwt);
     localStorage.setItem('expired', expire.toString());
   }
