@@ -53,7 +53,7 @@ export class AuthService {
   // }
 
   notExpired(): boolean {
-  const expire = localStorage.getItem('expire');
+  const expire = localStorage.getItem('expired'); // const expire = localStorage.getItem('expire');
 
   if (expire) {
     const expireNumber = parseInt(expire, 10);
@@ -71,10 +71,11 @@ export class AuthService {
   // }
 
   private body(df: NgForm): string {
-  return new HttpParams()
+    let params = new HttpParams()
     .set('username', df.value.username)
     .set('password', df.value.password)
     .toString(); // Serve per x-www-form-urlencoded
+    return params;
 }
 
   /**GESTION ERRORI  */

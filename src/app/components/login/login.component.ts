@@ -53,7 +53,8 @@ export class LoginComponent implements OnInit {
     this.auth.login(form)
       .subscribe(res => {
           alert('token passato: ' + res);
-          this.router.navigateByUrl('dashboard');
+          //this.router.navigate('/dashboard'); //this.router.navigateByUrl('dashboard');
+          this.router.navigate(['/dashboard']);
         },
         error => this.showerrmsg = error
       );
