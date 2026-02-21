@@ -12,7 +12,7 @@ const ApiUrl = 'http://localhost:8888/bookServer/auth/';
 export class AuthService {
   //private headers = new HttpHeaders()
 
-  private options : HttpHeaders = new HttpHeaders().set('Content-type', 'application/x-www-for-murlencoded');
+  private options : HttpHeaders = new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded');
   constructor(private http: HttpClient) { }
 
   login(datiForm: NgForm) : Observable<string>{
@@ -63,12 +63,19 @@ export class AuthService {
   return false;
 }
 
-  private body(df:NgForm){
+  // private body(df:NgForm){
 
-    let params = new HttpParams()
-     .set('username', df.value.username)
-     .set('password', df.value.password);
-  }
+  //   let params = new HttpParams()
+  //    .set('username', df.value.username)
+  //    .set('password', df.value.password);
+  // }
+
+  private body(df: NgForm): string {
+  return new HttpParams()
+    .set('username', df.value.username)
+    .set('password', df.value.password)
+    .toString(); // Serve per x-www-form-urlencoded
+}
 
   /**GESTION ERRORI  */
  private errorhandler(error: any){

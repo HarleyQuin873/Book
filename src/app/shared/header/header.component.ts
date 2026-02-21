@@ -31,7 +31,7 @@ import { RouterModule } from '@angular/router';
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-              <a class="nav-link" routerLink="book">Book</a>
+              <a class="nav-link" routerLink="dashboard">Book</a>
             </li>
             <!-- <li class="nav-item">
               <a class="nav-link" href="about.html">About</a>
