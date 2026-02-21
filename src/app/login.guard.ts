@@ -25,16 +25,22 @@
 
 import { CanActivateFn, Router } from '@angular/router';
 import { inject } from '@angular/core';
-import { AuthService } from './services/auth.service';
+import { AuthService } from './service/auth.service';
 
 export const loginGuard: CanActivateFn = (route, state) => {
 
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  const loginOK = authService.isLoggedIn();
+  //const loginOK = authService.isLoggedIn();
+  const loginOK = authService.notExpired()
 
-  if (!loginOK) {
+  // if (!loginOK) {
+  //   router.navigate(['/login']);
+  //   return false;
+  // }
+
+   if (!loginOK) {
     router.navigate(['/login']);
     return false;
   }
@@ -59,7 +65,7 @@ export const loginGuard: CanActivateFn = (route, state) => {
 // export class LoginGuard implements CanActivate{
 //  // router: Router;
 
-//   constructor(private router: Router){
+//   constructor(private router: Router, private auth: AuthService){
 
 //   }
 
@@ -72,7 +78,8 @@ export const loginGuard: CanActivateFn = (route, state) => {
 //   private checkLogin(){
 //     // chiamare il service addetto alla gestione del login e verifico le credenziali per l'accesso 
 //     let loginOK : boolean = true;
-//     if(!loginOK){
+//     //if(!loginOK){ 
+//      if(this.auth.notExpired())
 //       this.router.navigate(['/login']);
 //       return false;
 //     }
