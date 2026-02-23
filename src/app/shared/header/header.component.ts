@@ -37,13 +37,19 @@ import { NgbCollapse } from "@ng-bootstrap/ng-bootstrap";
             <li class="nav-item" *ngFor="let link of linkMenu">
               <a class="nav-link" [routerLink]="this.auth.checkDir() + link.url">{{link.text}}</a>  
             </li>
-            <li class="nav-item">
+            <li *ngIf="!this.auth.notExpired(); else logout" class="nav-item">
               <a class="nav-link" routerLink="login">Login </a>       
               <!-- {{this.auth.notExpired()}} -->
             </li>
-            <li class="nav-item">
-              <a class="nav-link" routerLink="logout">Logout</a>
+            <ng-template #logout >
+               <li  class="nav-item">
+              <a class="nav-link" routerLink="logout">Logout </a>       
+              <!-- {{this.auth.notExpired()}} -->
             </li>
+            </ng-template>
+            <!-- <li class="nav-item">
+              <a class="nav-link" routerLink="logout">Logout</a>
+            </li> -->
           </ul>
         </div>
       </div>
