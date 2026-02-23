@@ -38,6 +38,8 @@ export class AuthService {
 
   private setSession(jwt: string){ //jwt : jason web token
     let expire : number = new Date().getTime() + 60000 * 60; //un'ora
+    //questo è l'oggetto che ci fa capire che l'utente ha effettuato l'accesso e ha diritto
+    // ad accedere alla pagina protetta
     localStorage.setItem('token', jwt);
     localStorage.setItem('expired', expire.toString());
   }
@@ -52,7 +54,19 @@ export class AuthService {
   //   return false;
   // }
 
+  checkDir() : string{
+    if(this.notExpired()){
+      return 'dashboard/';
+    }
+    
+
+      return '';
+   
+  }
+
   notExpired(): boolean {
+    
+    // ci consente di stabilire se un utente è loggato o meno
   const expire = localStorage.getItem('expired'); // const expire = localStorage.getItem('expire');
 
   if (expire) {

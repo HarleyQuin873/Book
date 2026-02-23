@@ -34,6 +34,15 @@ import { NgbCollapse } from "@ng-bootstrap/ng-bootstrap";
         </button>
         <div [ngbCollapse]="!isCollapsed" class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
+            <li class="nav-item" *ngFor="let link of linkMenu">
+              <a class="nav-link" [routerLink]="this.auth.checkDir() + link.url">{{link.text}}</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" routerLink="login">Login {{this.auth.notExpired()}}</a>       
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" routerLink="logout">Logout</a>
+            </li>
           </ul>
         </div>
       </div>
@@ -219,7 +228,11 @@ export class HeaderComponent implements OnInit{
     constructor(
       public auth: AuthService,
       @Inject(DOCUMENT) private document: Document
-    ) {}
+    ) {
+        this.linkMenu=[
+        {text:'Book',url:''}  ];
+
+    }
   // constructor(public auth: AuthService, @Inject(DOCUMENT) document) {
   //   this.linkMenu=[
   //     {text:'Book',url:''}

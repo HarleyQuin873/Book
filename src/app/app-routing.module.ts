@@ -12,6 +12,7 @@ export const routes: Routes = [
   {path : 'dashboard/:id', component: BookDetailComponent, canActivate:[loginGuard]},
   { path: 'dashboard', component: DashBoardComponent, canActivate: [loginGuard] },
   {path : 'login', component: LoginComponent},
+  {path : 'logout', redirectTo: 'login', pathMatch:'full'},
   {path : '**', redirectTo: ''},
 ];
 
