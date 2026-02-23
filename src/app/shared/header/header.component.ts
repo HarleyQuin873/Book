@@ -38,12 +38,12 @@ import { NgbCollapse } from "@ng-bootstrap/ng-bootstrap";
               <a class="nav-link" [routerLink]="this.auth.checkDir() + link.url">{{link.text}}</a>  
             </li>
             <li *ngIf="!this.auth.notExpired(); else logout" class="nav-item">
-              <a class="nav-link" routerLink="login">Login <i class="fa fa-lock"></i></a>       
+              <a class="nav-link" routerLink="login">Login <i class="fa fa-unlock"></i></a>       
               <!-- {{this.auth.notExpired()}} -->
             </li>
             <ng-template #logout >
                <li  class="nav-item">
-              <a class="nav-link" routerLink="logout">Logout <i class="fa fa-unlock"></i></a>       
+              <a class="nav-link" routerLink="logout">Logout <i class="fa fa-lock"></i></a>       
               <!-- {{this.auth.notExpired()}} -->
             </li>
             </ng-template>
