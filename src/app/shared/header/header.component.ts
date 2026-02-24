@@ -6,6 +6,8 @@ import { Component, HostListener, Inject, OnInit} from '@angular/core';
 import { AuthService } from 'src/app/service/auth.service';
 import { trigger, state, transition, style, animate} from '@angular/animations';
 import { NgbCollapse } from "@ng-bootstrap/ng-bootstrap";
+import { Output, EventEmitter } from '@angular/core';
+import { SearchService } from 'src/app/service/search.service';
 
 
 
@@ -35,8 +37,10 @@ import { NgbCollapse } from "@ng-bootstrap/ng-bootstrap";
         <div [ngbCollapse]="!isCollapsed" class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item" *ngFor="let link of linkMenu">
-              <a class="nav-link" [routerLink]="this.auth.checkDir() + link.url">{{link.text}}</a>  
+              <!-- <a class="nav-link" [routerLink]="this.auth.checkDir() + link.url">{{link.text}}</a>   -->
+              <a class="nav-link" [routerLink]="['/', link.url]">{{ link.text }}</a>
             </li>
+            
             <li *ngIf="!this.auth.notExpired(); else logout" class="nav-item">
               <a class="nav-link" routerLink="login">Login <i class="fa fa-unlock"></i></a>       
               <!-- {{this.auth.notExpired()}} -->
@@ -50,6 +54,13 @@ import { NgbCollapse } from "@ng-bootstrap/ng-bootstrap";
             <!-- <li class="nav-item">
               <a class="nav-link" routerLink="logout">Logout</a>
             </li> -->
+            <li *ngIf="auth.notExpired()" class="nav-item">
+              <a class="nav-link" routerLink="dashboard">Dashboard</a>
+            </li>
+
+            <li *ngIf="auth.notExpired()" class="nav-item">
+              <a class="nav-link" routerLink="profilo">Profilo</a>
+            </li>
           </ul>
         </div>
       </div>
@@ -86,7 +97,21 @@ import { NgbCollapse } from "@ng-bootstrap/ng-bootstrap";
         </div>
       </div>
     </header>
-    <div class="subHeader"></div>
+    <!-- <div class="subHeader"></div> -->
+     <div class="subHeader d-flex justify-content-center align-items-center">
+
+      <div *ngIf="auth.notExpired()" style="width: 40%;">
+        <input 
+          type="text"
+          class="form-control"
+          placeholder="Cerca libro..."
+          [(ngModel)]="searchText"
+          (input)="onSearch()">
+      </div>
+
+    </div>
+
+
   `,
 
   styles: [
@@ -231,33 +256,32 @@ export class HeaderComponent implements OnInit{
     isCollapsed: any;
     linkMenu: any;
     state: string = 'void';
+    searchText: string = '';
+
+    @Output() searchEvent = new EventEmitter<string>();
+
+    // onSearch() {
+    //   this.searchEvent.emit(this.searchText);
+    // }
+
+    onSearch() {
+      this.searchService.setSearch(this.searchText);
+    }
 
     constructor(
       public auth: AuthService,
+      private searchService: SearchService,
       @Inject(DOCUMENT) private document: Document
     ) {
         this.linkMenu=[
-        {text:'Book',url:''}  ];
+        {text:'Book',url:''},
+        { text: 'Tipi', url: 'tipi' },
+        { text: 'Contatti', url: 'contatti' },
+        { text: 'About', url: 'about' }
+      ];
 
     }
-  // constructor(public auth: AuthService, @Inject(DOCUMENT) document) {
-  //   this.linkMenu=[
-  //     {text:'Book',url:''}
-  //   ];
-  // }
-
-//   @HostListener('window:scroll', ['$event'])
-//  // onWindowScroll(e){
-//     onWindowScroll(e: Event): void {
-//     if(window.pageYOffset > 40){
-//       let element = document.getElementById('mainNav');
-//       element.classList.add('sticky');
-//     }
-//     else{
-//       let element = document.getElementById('mainNav');
-//       element.classList.remove('sticky');
-//     }
-//   }
+  
 
   @HostListener('window:scroll') 
   onWindowScroll(): void {
